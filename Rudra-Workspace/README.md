@@ -1,28 +1,32 @@
 # REELMIND 🧠
-### AI-Powered Personal Knowledge Engine for Instagram
+### Production-Grade AI Knowledge Engine for Instagram
 
-REELMIND is a high-performance automation tool that transforms your saved Instagram reels into an intelligent, categorized, and searchable personal library. It uses a combination of **Playwright** for browser automation, **Groq AI** for lightning-fast content categorization, and **SQLite** for local data persistence.
+REELMIND is a high-performance personal AI system that transforms saved Instagram reels into a structured, semantic knowledge library. Unlike simple bookmarking tools, REELMIND understands the **meaning, intent, and subjects** of your content using deep-learning models.
 
 ---
 
-## ✨ Features
+## ✨ Features (V2 - Knowledge Engine)
 
-- **Automated Saving**: One-click automation to save any Instagram reel to your account.
-- **AI Categorization**: Uses Llama-3 (via Groq) to analyze captions and automatically group reels into meaningful "Pillars" (e.g., CAR, MOVIE, WEALTH).
-- **Personal Library**: A stunning, professional web dashboard to manage your saved content.
-- **Folder Management**: View your reels organized by category with automatic item counts.
-- **Automated Unsaving**: The "X" button not only removes the reel from your local library but also commands the robot to unsave it from your Instagram account.
-- **Premium UI**: Dark-mode mesh aesthetic with smooth transitions and professional typography.
+- **Semantic Discovery**: Search your reels by "concepts" and "intent" rather than just keywords (powered by ChromaDB and Sentence-Transformers).
+- **Deep AI Analysis**: Every reel is processed by Llama-3 (via Groq) to extract:
+  - 📝 **Concise Summary**
+  - 🏷️ **Pillar Topics**
+  - 🔑 **Subject Keywords**
+  - 🎯 **Creator Intent**
+- **Automated Collection**: One-click Playwright automation saves reels and captures full metadata.
+- **Smart Re-indexing**: A built-in sync engine that updates your semantic index as your library grows.
+- **Premium Dashboards**: State-of-the-art Dark Mode UI with Jakarta Sans typography and real-time similarity scoring.
 
 ---
 
 ## 🚀 Tech Stack
 
-- **Backend**: FastAPI (Python)
+- **AI Brain**: Groq Cloud (Llama-3.1-8b-instant)
+- **Embeddings**: Sentence-Transformers (Local all-MiniLM-L6-v2)
+- **Vector DB**: ChromaDB (Semantic Retrieval)
+- **RDBMS**: SQLite + SQLAlchemy (Metadata)
 - **Automation**: Playwright (Headless Chromium)
-- **AI**: Groq (Llama-3.1-8b-instant)
-- **Database**: SQLite (SQLAlchemy ORM)
-- **Frontend**: Vanilla HTML5, Tailwind CSS, JavaScript (SPA architecture)
+- **API**: FastAPI (High-performance Python)
 
 ---
 
@@ -34,51 +38,30 @@ REELMIND is a high-performance automation tool that transforms your saved Instag
 
 ### 2. Installation
 ```bash
-# Clone the repository
-git clone https://github.com/yourusername/reelmind.git
-cd reelmind
-
-# Install dependencies
+# Clone and install
+git clone https://github.com/rudrapatel06/reelmind-ai.git
 pip install -r requirements.txt
 
-# Install Playwright browsers
+# Setup Playwright
 playwright install chromium
 ```
 
 ### 3. Configuration
-Copy the `.env.example` to `.env` and add your Groq API Key:
-```env
-GROQ_API_KEY=your_key_here
-```
+Copy `.env.example` to `.env` and add your `GROQ_API_KEY`.
 
-### 4. Authentication
-Before running the app, you must link your Instagram account. Run the login script:
-```bash
-python ingestion/login.py
-```
-*This will open a browser for you to log in. Once done, it saves your session locally to `session_data/state.json` so the robot can act on your behalf.*
+### 4. Usage
+1. Run `python ingestion/login.py` to link your Instagram account.
+2. Run `python -m uvicorn api.main:app --reload` to start the engine.
+3. Access the dashboard at `http://127.0.0.1:8000`.
 
 ---
 
-## 💻 Usage
+## 🔒 Privacy
 
-1. **Start the Server**:
-```bash
-python -m uvicorn api.main:app --reload
-```
-2. **Access the App**: Open `http://127.0.0.1:8000` in your browser.
-3. **Save Reels**: Paste any Instagram Reel URL and click "Capture".
-4. **Manage Library**: Click "My Reels" to browse your folders.
-
----
-
-## 🔒 Privacy & Security
-
-- **Local Storage**: Your Instagram session data and reel database are stored locally on your machine.
-- **No Passwords Stored**: We use session states, meaning your password is never saved in the codebase.
-- **AI Analysis**: Only the reel captions are sent to Groq for categorization.
+- **Local-First**: All your vectors, databases, and session cookies stay on your machine.
+- **Secure Integration**: Your Instagram password is never stored; only local session tokens are used.
 
 ---
 
 ## 📄 License
-MIT License - Created by [Your Name]
+MIT License - Developed by [Rudra Patel](https://github.com/rudrapatel06)

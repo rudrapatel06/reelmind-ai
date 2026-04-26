@@ -5,3 +5,7 @@ playwright
 groq
 python-dotenv
 jinja2
+sentence-transformers
+chromadb
+torch
+pydantic-settings

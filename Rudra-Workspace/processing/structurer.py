@@ -1,62 +1,63 @@
+import os
 import json
 from groq import Groq
 from core.config import settings
 
 client = Groq(api_key=settings.GROQ_API_KEY)
 
-def categorize_reel(caption: str, existing_collections: list[str] = None) -> str:
-    """Extract a single category for the Instagram Reel, prioritizing existing collections."""
-    if not settings.GROQ_API_KEY:
-        raise ValueError("GROQ_API_KEY is not set.")
-        
-    if existing_collections is None:
-        existing_collections = []
-        
-    collections_str = ", ".join(existing_collections) if existing_collections else "None"
-        
+def analyze_reel(caption: str) -> dict:
+    """
+    Perform deep structural analysis of a reel caption.
+    Returns a dict with summary, topics, keywords, intent, and category.
+    """
+    if not caption:
+        return {
+            "summary": "No caption provided.",
+            "topics": [],
+            "keywords": [],
+            "intent": "unknown",
+            "category": "UNCATEGORIZED"
+        }
+
     prompt = f"""
-    You are a professional Content Librarian. Your goal is to accurately categorize Instagram reels based on their captions.
+    You are an Expert Knowledge Engineer. Analyze the following Instagram reel caption and extract structured information.
     
-    Caption: "{caption}"
+    CAPTION:
+    "{caption}"
     
-    User's existing collections: [{collections_str}]
+    TASK:
+    1. SUMMARY: A concise 1-sentence summary of what the reel is about.
+    2. TOPICS: A list of 2-4 main subject matters (e.g., "Performance Cars", "Cinematic Photography").
+    3. KEYWORDS: A list of 5-8 specific tags/keywords.
+    4. INTENT: The likely intent of the creator (e.g., Educational, Entertainment, Commercial, Inspirational).
+    5. CATEGORY: One broad, capitalized category name (e.g., CAR, MOVIE, TECH, WEALTH, LIFESTYLE).
     
-    Categorization Rules:
-    1. Look for THEME keywords: 
-       - Houses, Architecture, Interior -> HOME
-       - Movies, Film, Cinema, Actors -> MOVIE
-       - Cars, Vehicles, Racing -> CAR
-       - Wealth, Money, Success -> WEALTH
-       - Tech, Gadgets, AI -> TECH
-    2. If the reel fits an existing category, use it EXACTLY.
-    3. If not, create a BROAD, capitalized category name (e.g., LIFESTYLE, FOOD, SPORTS).
-    4. Avoid using "SOCIAL MEDIA" or "INSTAGRAM" as a category.
-    
-    Return a JSON object with a single key "category". Output ONLY valid JSON.
+    FORMAT: Return ONLY valid JSON.
+    {{
+      "summary": "...",
+      "topics": ["...", "..."],
+      "keywords": ["...", "..."],
+      "intent": "...",
+      "category": "..."
+    }}
     """
     
-    response = client.chat.completions.create(
-        model="llama-3.1-8b-instant", 
-        messages=[
-            {"role": "system", "content": "You are a categorization assistant. Output strictly a JSON object like {\"category\": \"Word\"}."},
-            {"role": "user", "content": prompt}
-        ],
-        response_format={ "type": "json_object" }
-    )
-    
     try:
-        content = response.choices[0].message.content
-        data = json.loads(content)
-        category = data.get("category", "Uncategorized").strip()
+        response = client.chat.completions.create(
+            model="llama-3.1-8b-instant",
+            messages=[{"role": "user", "content": prompt}],
+            temperature=0.1,
+            response_format={"type": "json_object"}
+        )
         
-        # Capitalize only if it's a new category to maintain original casing for existing ones
-        if category.lower() not in [c.lower() for c in existing_collections]:
-            category = category.title()
-            
-        # Ensure it's not too long
-        if len(category) > 25:
-            category = category[:25]
-        return category
+        analysis = json.loads(response.choices[0].message.content)
+        return analysis
     except Exception as e:
-        print(f"Error parsing LLM response: {e}")
-        return "Uncategorized"
+        print(f"AI Analysis error: {e}")
+        return {
+            "summary": "Analysis failed.",
+            "topics": [],
+            "keywords": [],
+            "intent": "unknown",
+            "category": "UNCATEGORIZED"
+        }

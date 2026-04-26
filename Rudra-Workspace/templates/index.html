@@ -3,83 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>REELMIND | Premium Library</title>
+    <title>REELMIND | AI Knowledge Engine</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary: #6366f1;
-            --secondary: #a855f7;
-            --accent: #ec4899;
-            --bg: #09090b;
-        }
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: var(--bg);
-            color: #fafafa;
-            overflow-x: hidden;
-        }
-        .mesh-bg {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: 
-                radial-gradient(circle at 0% 0%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 100% 100%, rgba(168, 85, 247, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 50% 50%, rgba(236, 72, 153, 0.05) 0%, transparent 50%);
-            z-index: -1;
-        }
-        .glass {
-            background: rgba(18, 18, 22, 0.4);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
-        }
-        .folder-card {
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            background: linear-gradient(145deg, rgba(30, 30, 35, 0.6) 0%, rgba(15, 15, 18, 0.8) 100%);
-        }
-        .folder-card:hover {
-            transform: translateY(-8px);
-            border-color: var(--primary);
-            box-shadow: 0 12px 40px -10px rgba(99, 102, 241, 0.3);
-        }
-        .shimmer {
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
-            background-size: 200% 100%;
-            animation: shimmer 2s infinite;
-        }
-        @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
-        
+        :root { --primary: #6366f1; --secondary: #a855f7; --bg: #09090b; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg); color: #fafafa; overflow-x: hidden; }
+        .mesh-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 0% 0%, rgba(99, 102, 241, 0.15) 0%, transparent 50%), radial-gradient(circle at 100% 100%, rgba(168, 85, 247, 0.15) 0%, transparent 50%); z-index: -1; }
+        .glass { background: rgba(18, 18, 22, 0.4); backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.08); }
         .nav-btn { position: relative; transition: all 0.3s; }
-        .nav-btn::after {
-            content: ''; position: absolute; bottom: -4px; left: 50%; width: 0; height: 2px;
-            background: var(--primary); transition: all 0.3s; transform: translateX(-50%);
-        }
-        .nav-btn.active::after { width: 100%; }
-        
+        .nav-btn.active::after { content: ''; position: absolute; bottom: -4px; left: 50%; width: 100%; height: 2px; background: var(--primary); transform: translateX(-50%); }
         .fade-in { animation: fadeIn 0.5s ease-out forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+        .shimmer { background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent); background-size: 200% 100%; animation: shimmer 2s infinite; }
+        @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
     </style>
 </head>
 <body class="min-h-screen">
     <div class="mesh-bg"></div>
 
-    <!-- HEADER / NAV -->
     <nav class="fixed top-0 w-full z-50 glass border-b border-white/5 py-4 px-8 flex justify-between items-center">
         <div class="flex items-center gap-3">
-            <div class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/20">
+            <div class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center">
                 <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
             </div>
             <span class="text-xl font-bold tracking-tighter">REEL<span class="text-indigo-400">MIND</span></span>
         </div>
         <div class="flex gap-8">
             <button onclick="showHome()" id="nav-home" class="nav-btn active text-sm font-semibold text-slate-300 hover:text-white uppercase tracking-widest">Saver</button>
+            <button onclick="showSearch()" id="nav-search" class="nav-btn text-sm font-semibold text-slate-300 hover:text-white uppercase tracking-widest">Search</button>
             <button onclick="showCategories()" id="nav-lib" class="nav-btn text-sm font-semibold text-slate-300 hover:text-white uppercase tracking-widest">Library</button>
         </div>
     </nav>
@@ -89,50 +41,45 @@
         <!-- SAVER VIEW -->
         <section id="view-home" class="w-full max-w-xl fade-in">
             <div class="text-center mb-12">
-                <h1 class="text-5xl font-black mb-4 tracking-tight">Save Everything.</h1>
-                <p class="text-slate-400 text-lg">AI-powered knowledge engine for your reels.</p>
+                <h1 class="text-5xl font-black mb-4 tracking-tight">AI Knowledge Engine.</h1>
+                <p class="text-slate-400 text-lg">Extracting intelligence from every reel.</p>
             </div>
-
-            <div class="glass rounded-[3rem] p-10 relative group overflow-hidden">
-                <div class="absolute -top-24 -right-24 w-48 h-48 bg-indigo-600/20 rounded-full blur-3xl group-hover:bg-indigo-600/30 transition-all"></div>
-                
-                <form id="saveForm" class="relative space-y-6">
-                    <div class="relative">
-                        <input type="url" id="urlInput" required placeholder="Paste Instagram Link..." 
-                            class="w-full bg-black/40 border border-white/10 rounded-2xl px-6 py-5 text-lg outline-none focus:border-indigo-500 transition-all placeholder:text-slate-600">
-                    </div>
-                    <button type="submit" id="submitBtn" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-5 rounded-2xl transition-all shadow-xl shadow-indigo-600/20 active:scale-95">
-                        <span id="btnText">Capture Reel</span>
+            <div class="glass rounded-[3rem] p-10 relative group">
+                <form id="saveForm" class="space-y-6">
+                    <input type="url" id="urlInput" required placeholder="Paste Instagram Link..." 
+                        class="w-full bg-black/40 border border-white/10 rounded-2xl px-6 py-5 text-lg outline-none focus:border-indigo-500 transition-all">
+                    <button type="submit" id="submitBtn" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-5 rounded-2xl shadow-xl shadow-indigo-600/20 transition-all">
+                        Capture & Analyze
                     </button>
                 </form>
-
-                <div id="statusBox" class="mt-8 hidden overflow-hidden">
-                    <div id="statusContent" class="text-center p-6 bg-white/5 rounded-2xl border border-white/5 animate-pulse">
-                        Analyzing contents...
-                    </div>
+                <div id="statusBox" class="mt-8 hidden">
+                    <div id="statusContent" class="p-6 bg-white/5 rounded-2xl border border-white/5 text-center text-sm"></div>
                 </div>
             </div>
+        </section>
 
-            <div class="mt-12 grid grid-cols-3 gap-6 opacity-40">
-                <div class="text-center"><div class="text-2xl font-bold">100%</div><div class="text-xs uppercase text-slate-500">Automated</div></div>
-                <div class="text-center"><div class="text-2xl font-bold">Groq</div><div class="text-xs uppercase text-slate-500">Powered AI</div></div>
-                <div class="text-center"><div class="text-2xl font-bold">SQLite</div><div class="text-xs uppercase text-slate-500">Local DB</div></div>
+        <!-- SEARCH VIEW -->
+        <section id="view-search" class="w-full max-w-4xl hidden fade-in">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold tracking-tight">Semantic Discovery</h2>
+                <p class="text-slate-400 mt-2">Search by intent and meaning, not just keywords.</p>
+                <button onclick="reindexDB()" id="syncBtn" class="mt-4 text-[10px] text-indigo-400 border border-indigo-400/30 px-3 py-1 rounded-full hover:bg-indigo-400 hover:text-white transition-all uppercase font-bold tracking-widest">
+                    Sync Search Engine
+                </button>
+            </div>
+            <div class="mb-12">
+                <input type="text" id="searchInput" placeholder="e.g., 'luxury cars with dark aesthetic' or 'career advice'" 
+                    class="w-full bg-white/5 border border-white/10 rounded-3xl px-8 py-6 text-xl outline-none focus:border-indigo-500 transition-all shadow-2xl">
+            </div>
+            <div id="search-results" class="space-y-6">
+                <!-- Search results -->
             </div>
         </section>
 
         <!-- LIBRARY VIEW -->
         <section id="view-categories" class="w-full max-w-5xl hidden fade-in">
-            <div class="flex justify-between items-end mb-12">
-                <div>
-                    <h2 class="text-4xl font-bold tracking-tight">Your Collections</h2>
-                    <p class="text-slate-400 mt-2">Auto-categorized by your personal AI assistant.</p>
-                </div>
-                <div class="text-slate-500 text-sm font-medium uppercase tracking-widest" id="folder-count">0 Folders</div>
-            </div>
-
-            <div id="category-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Folders -->
-            </div>
+            <h2 class="text-4xl font-bold tracking-tight mb-12">Knowledge Library</h2>
+            <div id="category-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
         </section>
 
         <!-- LIST VIEW -->
@@ -141,61 +88,38 @@
                 <button onclick="showCategories()" class="w-12 h-12 glass rounded-2xl flex items-center justify-center hover:bg-white/5 transition-all">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
                 </button>
-                <div>
-                    <h2 id="current-category-title" class="text-4xl font-bold tracking-tight uppercase">Folder Name</h2>
-                    <p class="text-indigo-400 font-semibold tracking-widest text-xs mt-1 uppercase">Stored Local Records</p>
-                </div>
+                <h2 id="current-category-title" class="text-4xl font-bold tracking-tight uppercase">Folder</h2>
             </div>
-
-            <div class="glass rounded-[2.5rem] overflow-hidden border border-white/5">
-                <div id="reels-container" class="divide-y divide-white/5">
-                    <!-- Reels -->
-                </div>
-            </div>
+            <div id="reels-container" class="space-y-4"></div>
         </section>
 
     </main>
 
     <script>
-        // NAVIGATION
         function hideAll() {
-            ['view-home', 'view-categories', 'view-list'].forEach(id => {
-                document.getElementById(id).classList.add('hidden');
-            });
-            ['nav-home', 'nav-lib'].forEach(id => {
-                document.getElementById(id).classList.remove('active');
-            });
+            ['view-home', 'view-search', 'view-categories', 'view-list'].forEach(id => document.getElementById(id).classList.add('hidden'));
+            ['nav-home', 'nav-search', 'nav-lib'].forEach(id => document.getElementById(id).classList.remove('active'));
         }
 
-        function showHome() {
-            hideAll();
-            document.getElementById('view-home').classList.remove('hidden');
-            document.getElementById('nav-home').classList.add('active');
-        }
-
+        function showHome() { hideAll(); document.getElementById('view-home').classList.remove('hidden'); document.getElementById('nav-home').classList.add('active'); }
+        function showSearch() { hideAll(); document.getElementById('view-search').classList.remove('hidden'); document.getElementById('nav-search').classList.add('active'); }
+        
         async function showCategories() {
             hideAll();
-            const grid = document.getElementById('category-grid');
-            grid.innerHTML = Array(3).fill('<div class="h-48 glass rounded-3xl shimmer"></div>').join('');
             document.getElementById('view-categories').classList.remove('hidden');
             document.getElementById('nav-lib').classList.add('active');
-
+            const grid = document.getElementById('category-grid');
+            grid.innerHTML = '<div class="col-span-full py-20 text-center shimmer">Loading...</div>';
             const res = await fetch('/api/categories');
             const categories = await res.json();
-            
-            document.getElementById('folder-count').innerText = `${categories.length} Folders`;
-            grid.innerHTML = categories.length ? '' : '<div class="col-span-full py-20 text-center text-slate-500">No collections found. Start saving!</div>';
-            
+            grid.innerHTML = '';
             categories.forEach(cat => {
                 grid.innerHTML += `
-                    <div onclick="showReels('${cat.name}')" class="folder-card p-8 rounded-[2rem] border border-white/5 cursor-pointer flex flex-col justify-between h-56 group">
-                        <div class="flex justify-between items-start">
-                            <div class="w-14 h-14 bg-indigo-500/10 rounded-2xl flex items-center justify-center text-2xl group-hover:bg-indigo-500/20 transition-all">📂</div>
-                            <div class="px-3 py-1 bg-white/5 rounded-full text-[10px] font-bold text-slate-500 tracking-tighter uppercase">${cat.count} Items</div>
-                        </div>
+                    <div onclick="showReels('${cat.name}')" class="glass p-8 rounded-[2rem] cursor-pointer hover:border-indigo-500 transition-all flex flex-col justify-between h-48">
+                        <div class="text-3xl">📂</div>
                         <div>
-                            <h3 class="text-xl font-bold text-white mb-1">${cat.name}</h3>
-                            <div class="text-xs text-slate-500 font-medium">Click to expand contents</div>
+                            <h3 class="text-xl font-bold text-white">${cat.name}</h3>
+                            <div class="text-xs text-slate-500 uppercase tracking-widest mt-1">${cat.count} Knowledge Nodes</div>
                         </div>
                     </div>
                 `;
@@ -204,82 +128,99 @@
 
         async function showReels(category) {
             hideAll();
+            document.getElementById('view-list').classList.remove('hidden');
             document.getElementById('current-category-title').innerText = category;
             const container = document.getElementById('reels-container');
-            container.innerHTML = '<div class="p-20 text-center shimmer">Fetching links...</div>';
-            document.getElementById('view-list').classList.remove('hidden');
-
+            container.innerHTML = '<div class="p-20 text-center shimmer">Loading...</div>';
             const res = await fetch(`/api/reels/${category}`);
             const reels = await res.json();
-            
             container.innerHTML = '';
-            reels.forEach((reel, index) => {
+            reels.forEach(r => {
                 container.innerHTML += `
-                    <div class="group flex items-center gap-6 px-8 py-6 hover:bg-white/[0.02] transition-all">
-                        <div class="text-slate-600 font-black text-xl tabular-nums w-8">${(index + 1).toString().padStart(2, '0')}</div>
-                        <div class="flex-1 min-w-0">
-                            <a href="${reel.url}" target="_blank" class="text-slate-200 font-medium hover:text-indigo-400 transition-all truncate block text-lg">
-                                ${reel.url}
-                            </a>
-                            <div class="text-[10px] text-slate-600 uppercase font-bold tracking-widest mt-1">Stored: ${new Date(reel.created_at).toLocaleDateString()}</div>
+                    <div class="glass p-6 rounded-3xl border border-white/5">
+                        <div class="flex justify-between items-start mb-4">
+                            <a href="${r.url}" target="_blank" class="text-indigo-400 font-bold hover:underline truncate block max-w-md">${r.url}</a>
+                            <button onclick="unsave('${r.url}', '${category}')" class="text-slate-600 hover:text-red-500">✕</button>
                         </div>
-                        <button onclick="unsave('${reel.url}', '${category}')" class="w-10 h-10 flex items-center justify-center text-slate-600 hover:text-red-500 hover:bg-red-500/10 rounded-xl transition-all font-bold">
-                            ✕
-                        </button>
+                        <p class="text-slate-300 text-sm leading-relaxed mb-4">${r.summary || 'No summary available.'}</p>
+                        <div class="flex flex-wrap gap-2">
+                            ${(r.topics || []).map(t => `<span class="bg-indigo-500/10 text-indigo-300 text-[10px] px-2 py-1 rounded-md uppercase font-bold tracking-tighter">${t}</span>`).join('')}
+                        </div>
                     </div>
                 `;
             });
         }
 
-        // ACTIONS
+        document.getElementById('searchInput').addEventListener('input', debounce(async (e) => {
+            const q = e.target.value;
+            if (q.length < 3) return;
+            const resultsDiv = document.getElementById('search-results');
+            resultsDiv.innerHTML = '<div class="p-10 text-center shimmer">Searching semantics...</div>';
+            const res = await fetch(`/api/search?q=${encodeURIComponent(q)}`);
+            const data = await res.json();
+            resultsDiv.innerHTML = '';
+            data.forEach(item => {
+                resultsDiv.innerHTML += `
+                    <div class="glass p-8 rounded-[2rem] border border-white/5 hover:border-indigo-500 transition-all">
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="bg-indigo-600 text-white text-[10px] px-3 py-1 rounded-full font-bold uppercase tracking-widest">${item.metadata.category}</span>
+                            <span class="text-[10px] text-slate-500 font-bold uppercase">Similarity: ${Math.round((1 - item.score) * 100)}%</span>
+                        </div>
+                        <p class="text-lg font-medium text-slate-200 mb-4">${item.metadata.summary}</p>
+                        <a href="${item.metadata.url}" target="_blank" class="text-indigo-400 text-sm hover:underline font-medium">Watch Reel →</a>
+                    </div>
+                `;
+            });
+        }, 500));
+
+        function debounce(func, wait) {
+            let timeout;
+            return function(...args) {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => func.apply(this, args), wait);
+            };
+        }
+
         document.getElementById('saveForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const url = document.getElementById('urlInput').value;
             const btn = document.getElementById('submitBtn');
             const status = document.getElementById('statusBox');
-            const statusContent = document.getElementById('statusContent');
-            
-            btn.disabled = true;
-            btn.innerHTML = '<span class="flex items-center gap-2">Processing...</span>';
-            status.classList.remove('hidden');
-            statusContent.innerText = 'AI is categorizing this reel...';
-
-            try {
-                const res = await fetch('/api/save', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({url})
-                });
-                const data = await res.json();
-                
-                if (data.status === 'success') {
-                    statusContent.innerHTML = `<span class="text-indigo-400 font-bold">Saved to ${data.category} folder!</span>`;
-                    document.getElementById('urlInput').value = '';
-                } else {
-                    statusContent.innerHTML = `<span class="text-red-400">Failed: ${data.error}</span>`;
-                }
-            } catch (err) {
-                statusContent.innerText = 'Network error.';
-            } finally {
-                btn.disabled = false;
-                btn.innerText = 'Capture Reel';
-            }
-        });
-
-        async function unsave(url, category) {
-            if (!confirm('Permanently remove this reel?')) return;
-            event.stopPropagation();
-            const row = event.target.closest('div');
-            row.style.opacity = '0.3';
-            row.style.pointerEvents = 'none';
-            
-            await fetch('/api/unsave', {
+            btn.disabled = true; btn.innerText = 'Analyzing...'; status.classList.remove('hidden');
+            const res = await fetch('/api/save', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({url})
             });
-            
+            const data = await res.json();
+            btn.disabled = false; btn.innerText = 'Capture & Analyze';
+            if (data.status === 'success') {
+                document.getElementById('statusContent').innerHTML = `<span class="text-indigo-400">Captured: ${data.summary}</span>`;
+                document.getElementById('urlInput').value = '';
+            } else {
+                document.getElementById('statusContent').innerHTML = `<span class="text-red-400">Error: ${data.error}</span>`;
+            }
+        });
+
+        async function unsave(url, category) {
+            if (!confirm('Remove from Knowledge Engine?')) return;
+            await fetch('/api/unsave', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({url}) });
             showReels(category);
+        }
+
+        async function reindexDB() {
+            const btn = document.getElementById('syncBtn');
+            btn.innerText = 'SYNCING... (Wait for it)';
+            btn.disabled = true;
+            try {
+                const res = await fetch('/api/reindex', { method: 'POST' });
+                const data = await res.json();
+                btn.innerText = `SYNCED ${data.indexed} REELS!`;
+                setTimeout(() => { btn.innerText = 'Sync Search Engine'; btn.disabled = false; }, 3000);
+            } catch (e) {
+                btn.innerText = 'SYNC FAILED';
+                btn.disabled = false;
+            }
         }
     </script>
 </body>

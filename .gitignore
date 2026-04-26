@@ -1,7 +1,10 @@
 __pycache__/
 *.db
-.env
+chroma_db/
 session_data/
+.env
 *.png
 .vscode/
 venv/
+node_modules/
+.DS_Store
