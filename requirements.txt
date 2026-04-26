@@ -1,0 +1,7 @@
+fastapi
+uvicorn
+sqlalchemy
+playwright
+groq
+python-dotenv
+jinja2
